@@ -8,6 +8,8 @@ import (
 
 	"ghibran.xyz/blog-backend/database"
 	"ghibran.xyz/blog-backend/router"
+
+	_ "github.com/go-sql-driver/mysql"
 )
 
 var (
@@ -18,12 +20,14 @@ var (
 func main() {
 	flag.Parse()
 
-	serve()
-}
-
-func init() {
-	database.Init()
+	err := database.Init()
 	router.Init()
+
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	serve()
 }
 
 func serve() {
@@ -35,7 +39,7 @@ func serve() {
 		if port == "" {
 			port = "80"
 		}
-		log.Println("running on http://" + domain + ":" + port + "...")
+		log.Println("running on http://" + domain + ":" + port)
 		err := http.ListenAndServe(":"+port, router)
 
 		if err != nil {
@@ -47,7 +51,7 @@ func serve() {
 	certFile := os.Getenv("CERT")
 	keyFile := os.Getenv("KEY")
 
-	log.Println("running on https://" + domain + "...")
+	log.Println("running on https://" + domain)
 	go http.ListenAndServe(":80", http.HandlerFunc(toHTTPS))
 
 	err := http.ListenAndServeTLS(":443", certFile, keyFile, router)

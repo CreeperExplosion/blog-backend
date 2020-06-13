@@ -4,5 +4,4 @@ export CERT="/etc/letsencrypt/live/api.ghibran.xyz/fullchain.pem"
 export KEY="/etc/letsencrypt/live/api.ghibran.xyz/privkey.pem"
 source db.secret
 
-
 go run main.go  --ssl=true

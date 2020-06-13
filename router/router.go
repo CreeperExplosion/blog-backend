@@ -21,7 +21,6 @@ func GetRouter() *mux.Router {
 }
 
 func setRoutes() {
-
 	router.HandleFunc("/", getRoot).Methods("GET")
 }
 

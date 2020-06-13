@@ -23,8 +23,15 @@ echo "export blogprojectset=\"true\"" >>~/.bashrc
 echo "# end config" >> ~/.bashrc
 
 
+if [-f "db.secret"]; then
+    printf "export dbIP=\"\" \nexport dbUSR=\"\" \nexport dbPW=\"\" \nexport dbName=\"\"" > db.secret
+fi
+
+echo "add your database environment variables in db.secret"
+
 echo
-echo "to run with hot-reload run:"
+echo "do 'source db.secret' "
+echo "and run with hot-reload do:"
 echo "  air ."
 
 go mod tidy
