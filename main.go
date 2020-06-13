@@ -27,20 +27,25 @@ func init() {
 }
 
 func serve() {
-	certFile := os.Getenv("CERT")
-	keyFile := os.Getenv("KEY")
 
 	router := router.GetRouter()
+	port := os.Getenv("PORT")
 
 	if !*withSSL {
-		log.Println("running on http://" + domain + "...")
-		err := http.ListenAndServe(":80", router)
+		if port == "" {
+			port = "80"
+		}
+		log.Println("running on http://" + domain + ":" + port + "...")
+		err := http.ListenAndServe(":"+port, router)
 
 		if err != nil {
 			log.Fatal(err)
 		}
 		return
 	}
+
+	certFile := os.Getenv("CERT")
+	keyFile := os.Getenv("KEY")
 
 	log.Println("running on https://" + domain + "...")
 	go http.ListenAndServe(":80", http.HandlerFunc(toHTTPS))
